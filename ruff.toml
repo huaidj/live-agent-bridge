@@ -1,0 +1,14 @@
+# 独立的 ruff 配置：ruff 会优先读 ruff.toml，而不是 pyproject.toml。
+# 明确列出规则集，避免新版 ruff 改变默认 select 导致基线漂移。
+line-length = 120
+target-version = "py311"
+
+[lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]
+
+[lint.per-file-ignores]
+# core.py reloads plugins.py between imports on purpose (Live's hot-reload list predates it).
+"src/live_agent_bridge/remote_script/AgentBridge/core.py" = ["E402", "I001"]
+# Optional audio deps are skipped with pytest.importorskip before the imports that need them.
+"tests/test_audio_taste.py" = ["E402"]
+"tests/test_reference_taste.py" = ["E402"]
